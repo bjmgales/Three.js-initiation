@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { useEffect, useRef } from 'react';
-import { loadCity } from './creator_loader.tsx';
+import { loadCity, loadFont } from './creator_loader.tsx';
 import {
     defaultCam, setNewLight
 } from '../Player/camera_lightings.ts';
@@ -67,7 +67,7 @@ const ThreeCreator = (props: ThreeCreator) => {
         };
         window.addEventListener('mousedown', handleMiddleClick);
 
-        loadCity(cityRef, scene, curvesRef);
+
 
         let animationFrameId: number;
         const animate = () => {
@@ -78,8 +78,11 @@ const ThreeCreator = (props: ThreeCreator) => {
             renderer.autoClear = true;
             renderer.render(scene, camera);
         }
-
-        animate()
+        (async ()=>{
+            loadCity(cityRef, scene);
+            loadFont(scene);
+            animate()
+        })()
 
         return (() => {
             window.removeEventListener('resize', handleResize);

@@ -46,7 +46,8 @@ export const defRoadPoints = [
 export let userRoadPoints: THREE.Vector3[] = []
 
 export function carHardPath(curvesRef: React.MutableRefObject<THREE.CatmullRomCurve3 | null>,
-  taxiRef: React.MutableRefObject<THREE.Object3D | null>, t: React.MutableRefObject<number>) {
+  taxiRef: React.MutableRefObject<THREE.Object3D | null>, t: React.MutableRefObject<number>,
+  wheels:THREE.Object3D[]) {
   if (!curvesRef?.current || !taxiRef?.current)
     return;
 
@@ -60,7 +61,23 @@ export function carHardPath(curvesRef: React.MutableRefObject<THREE.CatmullRomCu
   );
   taxiRef.current.quaternion.slerp(quaternion, 0.1);
   t.current += speed;
+  // wheels.forEach(wheel => {
+  //   wheel.traverse((child)=>{
+  //     if (child instanceof THREE.Mesh) {
+  //       if (!child.geometry.boundingBox) {
+  //         child.geometry.computeBoundingBox();
+  //       }
 
+  //       const offset = child.geometry.boundingBox.getCenter(new THREE.Vector3());
+
+  //       child.geometry.center();
+  //       child.position.copy(offset);
+  //     }
+  //   })
+  // });
+  wheels.forEach(wheel => {
+    wheel.rotation.x+=0.1
+  });
 }
 
 export function getPath(newPath: { [key: string]: string }) {

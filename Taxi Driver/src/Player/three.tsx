@@ -1,12 +1,12 @@
 import * as THREE from 'three';
 import { useEffect, useRef } from 'react';
 import * as utils from '../utils.ts'
-import { loadCity, loadTaxi } from './loader.ts';
+import { loadCity, loadTaxi, loadFont } from './loader.ts';
 import { carHardPath, userRoadPoints } from './car_path.ts';
-import {
-    defaultCam, setNewLight, carCamera,
-    setCamPosition, setCamAngle, randomCamPicker
-} from './camera_lightings.ts';
+import { defaultCam, setNewLight, carCamera,
+        setCamPosition, setCamAngle, randomCamPicker}
+        from './camera_lightings.ts';
+import test from 'node:test';
 
 
 function background(scene: THREE.Scene, time: number, light: THREE.AmbientLight,
@@ -76,9 +76,9 @@ const Three = (props: Three) => {
         let renderer = new THREE.WebGLRenderer();
         const camera = defaultCam(renderer)
 
-        let light = new THREE.AmbientLight(0x555555, 10)
+        let light = new THREE.AmbientLight(0x555555, 2)
         scene.add(light);
-        let dirLight = new THREE.DirectionalLight('#FFFFFF', 10)
+        let dirLight = new THREE.DirectionalLight('#FFFFFF', 3)
         dirLight.position.set(1, 1, 1);
         threeRef.current.appendChild(renderer.domElement);
         scene.add(dirLight)
@@ -98,6 +98,7 @@ const Three = (props: Three) => {
         let time = 0;
         let spotlightOn = true;
         let animationFrameId: number;
+        let wheels: THREE.Object3D[] = [];
         const animate = () => {
             animationFrameId = requestAnimationFrame(animate);
             if (!taxiRef.current || !taxiRef.current.position || !cityRef?.current || !carCam)
@@ -105,8 +106,13 @@ const Three = (props: Three) => {
             if (tRef.current < 1) {
                 if (isStartRef.current) {
                     randomCamPicker(carCam, tRef.current, taxiRef);
-                    carHardPath(curvesRef, taxiRef, tRef);
+                    carHardPath(curvesRef, taxiRef, tRef, wheels);
                     time += 0.001;
+                    scene.remove(scene.getObjectByName('title')!)
+                }
+                else{
+                    if (scene.getObjectByName('title'))
+                        scene.getObjectByName('title')!.rotation.y += 0.01
                 }
                 background(scene, time, light, dirLight);
 
@@ -131,6 +137,12 @@ const Three = (props: Three) => {
             await loadCity(cityRef, scene, curvesRef, props.newPath);
             await loadTaxi(taxiRef, scene);
             carCam = carCamera(taxiRef);
+            await loadFont(scene, taxiRef)
+            console.log(taxiRef.current)
+            wheels.push(taxiRef.current?.getObjectByName('DEF-WheelBkL')!)
+            wheels.push(taxiRef.current?.getObjectByName('DEF-WheelBkR')!)
+            wheels.push(taxiRef.current?.getObjectByName('DEF-WheelFtL')!)
+            wheels.push(taxiRef.current?.getObjectByName('DEF-WheelFtR')!)
             animate();
         })()
 

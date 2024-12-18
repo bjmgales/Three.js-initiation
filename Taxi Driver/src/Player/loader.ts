@@ -2,6 +2,8 @@ import { GLTFLoader } from 'three/examples/jsm/Addons.js';
 import * as THREE from 'three';
 import { getPath } from './car_path';
 import { defRoadPoints, userRoadPoints } from './car_path';
+import { FontLoader } from 'three/addons/loaders/FontLoader.js';
+import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 
 export const loadCity = async (cityRef: React.MutableRefObject<THREE.Object3D | null>, scene: THREE.Scene,
     curvesRef: React.MutableRefObject<THREE.CatmullRomCurve3 | null>, newPath: { [key: string]: string }) => {
@@ -76,4 +78,32 @@ export const loadTaxi = async (taxiRef: React.MutableRefObject<THREE.Object3D | 
             }
         );
     });
+}
+
+export const loadFont = async(scene: THREE.Scene, taxiRef:React.MutableRefObject<THREE.Object3D | null>)=>{
+    const loader = new FontLoader;
+    loader.load('/assets/taxiFont.json', (font)=>{
+        console.log(font)
+        const geometry = new TextGeometry(
+            'TAXI DRIVER',
+            {
+                font:font,
+                size:0.2,
+                depth:0.05,
+                curveSegments:12,
+            }
+        )
+        geometry.center();
+        const textMesh = new THREE.Mesh(geometry, [
+            new THREE.MeshPhongMaterial({color: '#F2C632'}),
+            new THREE.MeshPhongMaterial({color: '#F9270F'}),
+        ])
+        textMesh.animations
+        textMesh.position.copy(taxiRef.current?.position.clone()!);
+        textMesh.position.y +=1.7
+        textMesh.position.x
+        textMesh.name='title';
+        scene.add(textMesh)
+
+    })
 }
