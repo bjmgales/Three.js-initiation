@@ -100,7 +100,7 @@ export const loadFont = async(scene: THREE.Scene, taxiRef:React.MutableRefObject
         ])
         textMesh.animations
         textMesh.position.copy(taxiRef.current?.position.clone()!);
-        textMesh.position.y +=1.7
+        textMesh.position.y +=2
         textMesh.position.x
         textMesh.name='title';
         scene.add(textMesh)
