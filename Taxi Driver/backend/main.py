@@ -29,7 +29,6 @@ class Position(BaseModel):
 
 @app.post("/save-trip")
 def save_trip(vectors: list[Position]):
-    print(vectors)
     with open('./test.txt', 'w') as f:
         json.dump([vector.dict() for vector in vectors], f)
 
