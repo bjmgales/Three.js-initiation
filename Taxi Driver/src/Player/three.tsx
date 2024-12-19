@@ -37,7 +37,7 @@ function background(scene: THREE.Scene, time: number, light: THREE.AmbientLight,
             new THREE.Color('#111144'),
             time - 1
         );
-        dirLight.intensity = THREE.MathUtils.lerp(0.8, 0.2, time - 1); // Dim down as it gets darker
+        dirLight.intensity = THREE.MathUtils.lerp(0.8, 0.2, time - 1);
     }
 
 }
