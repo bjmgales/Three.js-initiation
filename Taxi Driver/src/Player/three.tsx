@@ -6,7 +6,6 @@ import { carHardPath, userRoadPoints } from './car_path.ts';
 import { defaultCam, setNewLight, carCamera,
         setCamPosition, setCamAngle, randomCamPicker}
         from './camera_lightings.ts';
-import test from 'node:test';
 
 
 function background(scene: THREE.Scene, time: number, light: THREE.AmbientLight,
@@ -16,33 +15,31 @@ function background(scene: THREE.Scene, time: number, light: THREE.AmbientLight,
         return;
     if (time <= 1) {
         scene.background = new THREE.Color().lerpColors(
-            new THREE.Color('#0096FF'),
-            new THREE.Color('#968fff'),
-            time
-        )
-        light.color = new THREE.Color().lerpColors(
-            new THREE.Color(0x555555),
-            new THREE.Color('#FFDD99'),
+            new THREE.Color('#87CEEB'),
+            new THREE.Color('#FF4500'),
             time
         );
         light.color = new THREE.Color().lerpColors(
-            new THREE.Color(0x555555),
-            new THREE.Color('#FFDD99'),
+            new THREE.Color('#FFFFFF'),
+            new THREE.Color('#FF8C00'),
             time
         );
-        dirLight.intensity = THREE.MathUtils.lerp(10, 5, time)
+        dirLight.intensity = THREE.MathUtils.lerp(3, 0.8, time);
     }
     else {
         scene.background = new THREE.Color().lerpColors(
-            new THREE.Color('#968fff'),
-            new THREE.Color('#2d028a'),
-            time - 1)
+            new THREE.Color('#FF4500'),
+            new THREE.Color('#000033'),
+            time - 1
+        );
         light.color = new THREE.Color().lerpColors(
-            new THREE.Color('#FFDD99'),
-            new THREE.Color('#222244'),
-            time - 1);
-        dirLight.intensity = THREE.MathUtils.lerp(5, 2, time)
+            new THREE.Color('#FF8C00'),
+            new THREE.Color('#111144'),
+            time - 1
+        );
+        dirLight.intensity = THREE.MathUtils.lerp(0.8, 0.2, time - 1); // Dim down as it gets darker
     }
+
 }
 
 interface Three {
