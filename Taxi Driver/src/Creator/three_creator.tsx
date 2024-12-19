@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { useEffect, useRef } from 'react';
-import { loadCity, loadFont } from './creator_loader.tsx';
+import { loadCity } from './creator_loader.tsx';
 import {
     defaultCam, setNewLight
 } from '../Player/camera_lightings.ts';
@@ -80,7 +80,6 @@ const ThreeCreator = (props: ThreeCreator) => {
         }
         (async ()=>{
             loadCity(cityRef, scene);
-            loadFont(scene);
             animate()
         })()
 
